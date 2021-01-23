@@ -19,7 +19,8 @@ class Screen(object):
     @property
     def resolution(self):
         return self._width * self._height
-    
+
+
 # 测试:
 s = Screen()
 s.width = 1024
