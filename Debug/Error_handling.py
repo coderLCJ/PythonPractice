@@ -11,7 +11,7 @@ def fun():
     else:
         print('no error')
     finally:
-        print('finally')
+        print('finally...')
     print('END')
 
 
