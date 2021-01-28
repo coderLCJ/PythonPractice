@@ -1,3 +1,4 @@
+import logging
 # try except finally
 def fun():
     try:
@@ -27,7 +28,9 @@ def main():
         bar('a')
     except Exception as e:
         print('Error:', e)
+        logging.exception(e)    # 记录错误 并且正常退出
     finally:
         print('finally...')
 
 
+main()
