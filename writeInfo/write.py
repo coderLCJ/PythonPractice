@@ -1,7 +1,12 @@
 from selenium import webdriver
-import time
-import tesserocr
 from PIL import Image
+from email.mime.text import MIMEText
+from email.header import Header
+import time, smtplib, tesserocr, selenium
+import os, sys
+from selenium.webdriver.chrome.options import Options
+options = Options()
+options.add_argument('-headless')
 # 打开chrome浏览器
 driver = webdriver.Chrome()
 # 进入健康情况填报官网
@@ -22,26 +27,52 @@ stu_password = '061773'
 password = driver.find_element_by_xpath('//*[@id="Name"]')
 password.send_keys(stu_password)
 
-# 获取验证码
-# (1)登录页面截图
-driver.save_screenshot('F:/MyGithubFile/python/writeInfo/full.png')     # 可以修改保存地址
-code_ele = driver.find_element_by_class_name('code-img')
-print("验证码的坐标为：", code_ele.location)    # 控制台查看{'x': 1086, 'y': 368}
-print("验证码的大小为：", code_ele.size)    # 图片大小{'height': 40, 'width': 110}
-# (4)图片4个点的坐标位置
 
-left = 1098   # x点的坐标
-top = 343    # y点的坐标
-right = 80 + left  # 上面右边点的坐标
-down = 25 + top  # 下面右边点的坐标
-image = Image.open('full.png')
-# (4)将图片验证码截取
-code_image = image.crop((left, top, right, down))
-code_image.save('F:/MyGithubFile/python/writeInfo/code.png')     # 截取的验证码图片保存为新的文件
-v_code = tesserocr.image_to_text(Image.open('F:/MyGithubFile/python/writeInfo/code.png'))
-print('验证码是:', v_code)
-code = driver.find_element_by_xpath('//*[@id="codeInput"]')
-code.send_keys(v_code)
+# 获取验证码 有时候会验证错误 重复验证直至进入页面
+while True:
+    try:
+        driver.find_element_by_xpath('//*[@id="platfrom1"]/a/img')  # 尝试获取填体温页面 成功即登录成功
+        break
+    except:
+        # 验证码错误 点击刷新一下
+        driver.find_element_by_xpath('//*[@id="code-box"]').click()
+        driver.save_screenshot('F:/MyGithubFile/python/writeInfo/full.png')  # 可以修改保存地址
+        code_ele = driver.find_element_by_class_name('code-img')
+        print("验证码的坐标为：", code_ele.location)  # 控制台查看{'x': 1086, 'y': 368}
+        print("验证码的大小为：", code_ele.size)  # 图片大小{'height': 40, 'width': 110}
+        # (4)图片4个点的坐标位置
+
+        left = 1098  # x点的坐标
+        top = 343  # y点的坐标
+        right = 80 + left  # 上面右边点的坐标
+        down = 25 + top  # 下面右边点的坐标
+        image = Image.open('F:/MyGithubFile/python/writeInfo/full.png')
+        # (4)将图片验证码截取
+        code_image = image.crop((left, top, right, down))
+        code_image.save('F:/MyGithubFile/python/writeInfo/code.png')  # 截取的验证码图片保存为新的文件
+        v_code = tesserocr.image_to_text(Image.open('F:/MyGithubFile/python/writeInfo/code.png'))
+        print('验证码是:', v_code)
+        code = driver.find_element_by_xpath('//*[@id="codeInput"]')
+        code.send_keys(v_code)
+        print('即将尝试登录....')
+        driver.find_element_by_xpath('//*[@id="Submit"]').click()
+
+# 填写信息
+try:
+    driver.find_element_by_xpath('//*[@id="platfrom2"]').click()    # 选择信息采集表
+    driver.find_element_by_xpath('//*[@id="form1"]/div[1]/div[4]/div[2]/select[2]/option[17]') .click()  # 所在城市
+    driver.find_element_by_xpath('//*[@id="form1"]/div[1]/div[4]/div[2]/select[3]/option[2]').click()   # 所在县、区
+    driver.find_element_by_xpath('//*[@id="ckCLS"]').click()    # 勾选承诺书
+    driver.find_element_by_xpath('//*[@id="SaveBtnDiv"]/button').click()    # 点击提交， 测试时此步切记关闭
+    send_msg = '今日已经填报好健康信息'
+    # 填写成功
+except:
+    # 填写失败
+    send_msg = '健康信息填写失败'
+os.popen('py.exe')
+print(send_msg)
+
+# --------------------------------------------------------------------------
 
 # # 点击登录
 # driver.find_element_by_class_name('submit_button').click()
@@ -92,6 +123,42 @@ driver.find_element_by_xpath('//*[@id="rbxx_div"]/div[20]/label[1]').click()
 # driver.find_element_by_xpath('//*[@id="qrxx_div"]/div[2]/div[25]').click()
 # # 确认提交
 # driver.find_element_by_partial_link_text('确认提交').click()
-time.sleep(2)
 # 关闭浏览器
 # driver.close()
+
+# --------------------------------------------------------------------------
+send = False
+if send:
+    print(send_msg)
+    # 发送邮件
+    # 发信方的信息：发信邮箱，QQ 邮箱授权码
+    from_addr = '2907805535@qq.com'
+    # 进入qq邮箱->设置->账户->找到stmp服务，点击开启。验证后会给你一个授权码，直接复制，填入下方即可
+    password = 'xuejzktjljfsdhch'
+
+    # 收信方邮箱
+    to_addr = '2907805535@qq.com'
+
+    # 发信服务器
+    smtp_server = 'smtp.qq.com'
+
+    # 邮箱正文内容，第一个参数为内容（正文部分），第二个参数为格式(plain 为纯文本)，第三个参数为编码
+    msg = MIMEText(send_msg, 'plain', 'utf-8')
+
+    # 邮件头信息
+    msg['From'] = Header(from_addr)
+    msg['To'] = Header(to_addr)
+    msg['Subject'] = Header('每日疫情填报情况')
+
+    # 开启发信服务，这里使用的是加密传输
+    server = smtplib.SMTP_SSL(smtp_server)
+    server.connect(smtp_server, 465)
+    # 登录发信邮箱
+    server.login(from_addr, password)
+    # 发送邮件
+    server.sendmail(from_addr, to_addr, msg.as_string())
+    # 关闭服务器
+    server.quit()
+driver.close()
+# os.system('taskkill /im chromedriver.exe /F')
+# os.system('taskkill /im chrome.exe /F')
