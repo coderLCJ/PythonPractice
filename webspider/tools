@@ -3,3 +3,7 @@
 
 # 保存时的编码问题
 s = open('html.txt', 'w', encoding='utf8')
+
+# 爬取源码乱码问题 apparent_encoding从网页的内容中分析网页编码的方式，所以比手动encoding更加准确
+res = requests.get('https://www.baidu.com')
+res.encoding = res.apparent_encoding
