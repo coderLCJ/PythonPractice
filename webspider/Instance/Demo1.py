@@ -25,6 +25,7 @@ def parse_page(html):
 
 def write_to_file(content):
     with open('movie.txt', 'a', encoding='utf-8') as f:
+        print(content)
         f.write(json.dumps(content, ensure_ascii=False) + '\n')
 
 def main(offset):
