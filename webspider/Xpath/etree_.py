@@ -45,7 +45,7 @@ res = html.xpath('//li[contains(@class, "item-1") and @name="one"]//text()')
 print(res)
 
 # 按序选择节点
-res = html.xpath('//li[1]/a/text()')    # 第一个li节点
+res = html.xpath('//li[1]/a/text()')    # 第一个li节点 text()输出内容
 print(res)
 res = html.xpath('//li[last()]/a/text()')   # 最后一个li节点
 print(res)
