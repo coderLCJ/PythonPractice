@@ -1,4 +1,4 @@
-import requests
+import requests, re, json, time
 
 def get_page(url):
     headers = {
@@ -10,11 +10,33 @@ def get_page(url):
     else:
         return None
 
-def main():
-    url = 'http://maoyan.com/board/4'
+def parse_page(html):
+    pattern = re.compile('<dd>.*?board-index.*?>(.*?)</i>.*?data-src="(.*?)".*?name.*?a.*?>(.*?)</a>.*?star.*?>(.*?)</p>.*?releasetime.*?>(.*?)</p>.*?integer.*?>(.*?)</i>.*?fraction.*?>(.*?)</i>.*?</dd>', re.S)
+    items = re.findall(pattern, html)
+    for item in items:
+        yield {
+            'index': item[0],
+            'image': item[1],
+            'title': item[2],
+            'actor': item[3].strip()[3:],
+            'time': item[4].strip()[5:],
+            'score': item[5] + item[6]
+        }
+
+def write_to_file(content):
+    with open('movie.txt', 'a', encoding='utf-8') as f:
+        f.write(json.dumps(content, ensure_ascii=False) + '\n')
+
+def main(offset):
+    url = 'http://maoyan.com/board/4?offset=' + str(offset)
     html = get_page(url)
-    print(html)
+    for i in parse_page(html):
+        write_to_file(i)
 
 
 if __name__ == '__main__':
-    main()
+    for i in range(10):
+        main(i*10)
+        time.sleep(1)
+        print('>', end='')
+    print('爬取完成')
