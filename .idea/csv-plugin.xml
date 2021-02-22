@@ -3,6 +3,13 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
+        <entry key="\webspider\DataStorage\RelationalDatabaseStorage\insert_data.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\webspider\DataStorage\data4.csv">
           <value>
             <Attribute>
