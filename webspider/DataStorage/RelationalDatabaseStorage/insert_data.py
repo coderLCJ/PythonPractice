@@ -24,11 +24,20 @@ data = {
     'name': 'Bob',
     'age': 20
 }
-table = 'studnets'
+table = 'students'
 keys = ','.join(data.keys())
-#   join()：连接字符串数组。将字符串、元组、列表中的元素以指定的字符(分隔符)连接生成一个新的字符串
-values = ','.join(['%s'] * len(data))
-print(values)
+# join()：连接字符串数组。将字符串、元组、列表中的元素以指定的字符(分隔符)连接生成一个新的字符串
+values = ','.join(['%s'] * len(data))   # 构造 '%s,%s,%s'
+sql = f'INSERT INTO {table}({keys}) values({values})'   # {}内替换成相应字符串变量
+# 也可写作'INSERT INTO {table}({keys}) values({values})'.format(table=table, keys=keys, values=values)
+print(sql)
+try:
+    if cursor.execute(sql, tuple(data.values())):
+        print('successful')
+        db.commit()
+except:
+    print('Failed')
+    db.rollback()
 
 db.close()
 '''

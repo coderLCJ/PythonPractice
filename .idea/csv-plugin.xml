@@ -10,7 +10,28 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\webspider\DataStorage\RelationalDatabaseStorage\search_data.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\webspider\DataStorage\RelationalDatabaseStorage\update_data.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\webspider\DataStorage\data4.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\webspider\DataStorage\non-RelationalDatabaseStorage\test.py">
           <value>
             <Attribute>
               <option name="separator" value="," />
