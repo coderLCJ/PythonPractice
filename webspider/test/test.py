@@ -2,7 +2,8 @@ import smtplib
 from email.mime.text import MIMEText
 from email.header import Header
 # 发送给个人邮箱
-# 用于构建邮件头
+# 用于构建邮件头cls
+
 # 发信方的信息：发信邮箱，QQ 邮箱授权码
 from_addr = '2907805535@qq.com'
 # 进入qq邮箱->设置->账户->找到stmp服务，点击开启。验证后会给你一个授权码，直接复制，填入下方即可

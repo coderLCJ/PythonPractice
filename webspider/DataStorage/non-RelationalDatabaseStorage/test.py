@@ -1,4 +1,4 @@
-import pymysql
+import pymongo
 
-db = pymysql.connect()
-cursor = db.cursor()
+
+client = pymongo.MongoClient(host='localhost', port=27017)

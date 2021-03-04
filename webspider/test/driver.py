@@ -1,5 +1,4 @@
 from flask import Flask
-from selenium import webdriver
 app = Flask(__name__)
 
 @app.route("/")
