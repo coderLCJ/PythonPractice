@@ -1,4 +1,4 @@
-import pymongo
+import torch
 
-
-client = pymongo.MongoClient(host='localhost', port=27017)
+x = torch.empty(5, 3)
+print(x)
