@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import requests, re, json, time
 
 def get_page(url):

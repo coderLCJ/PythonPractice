@@ -14,3 +14,7 @@ text = '''
 html = etree.HTML(text)  # 自动修正HTML
 res = html.xpath('//li[@class="item-0"]/a/text()')
 print(res)
+f = open('data.txt', 'w')
+for s in res:
+    f.write(s + '\n')
+
