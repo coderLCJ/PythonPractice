@@ -1,4 +1,2 @@
-mes = ''
-while mes != 'exit':
-    mes = input()
-    print(mes)
+def making():
+    print('you are beautiful')
