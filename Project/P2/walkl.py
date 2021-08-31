@@ -1,8 +1,9 @@
+import time
 from random import choice
 from matplotlib import pyplot as plt
 
 class RandomWalk():
-    def __init__(self, num_points=5000):
+    def __init__(self, num_points=50000):
         self.num_points = num_points
         self.x_values = [0]
         self.y_valuse = [0]
@@ -27,8 +28,10 @@ class RandomWalk():
             self.y_valuse.append(y_next)
 
 
-
 r = RandomWalk()
 r.fill_walk()
-plt.scatter(r.x_values, r.y_valuse, s = 1)
+point_numbers = list(range(r.num_points))
+plt.scatter(r.x_values, r.y_valuse, c=point_numbers, cmap=plt.cm.Blues, edgecolors='none', s=1)
+plt.scatter(0, 0, c='yellow')
+plt.scatter(r.x_values[-1], r.y_valuse[-1], c='red')
 plt.show()
