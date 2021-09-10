@@ -1,26 +1,37 @@
-import collections
-from random import choice
+# -*- coding: utf-8 -*-
+import math
 
-Card = collections.namedtuple('Card', ['rank', 'suit'])
+class Vector:
+    def __init__(self, x=0, y=0):
+        self.x = x
+        self.y = y
 
-class FrenchDeck:
-    ranks = [str(n) for n in range(2, 11)] + list('JQKA')
-    suits = 'spades diamonds clubs hearts'.split()
+    # 字符串表示形式
+    def __repr__(self):
+        return 'Vector(%r, %r)' % (self.x, self.y)
 
-    def __init__(self):
-        self._card = [Card(rank, suit) for rank in self.ranks for suit in self.suits]
+    # hypot求模
+    def __abs__(self):
+        return math.hypot(self.x, self.y)
 
-    def __len__(self):
-        return len(self._card)
+    def __bool__(self):
+        return bool(abs(self))
 
-    def __getitem__(self, item):
-        return self._card[item]
+    def __add__(self, other):
+        return Vector(self.x + other.x, self.y + other.y)
 
-    @property
-    def card(self):
-        return self._card
+    def __mul__(self, other):
+        return Vector(self.x*other, self.y*other)
+
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y
 
 
-deck = FrenchDeck()
-print(len(deck))
-print(choice(deck))
+v2 = Vector(1, 2)
+v3 = Vector(2, 3)
+v1 = Vector(1, 2)
+print(v1 == v2)
+print(v1 == v3)
+
+x = [i for i in range(10)]
+print(x)
